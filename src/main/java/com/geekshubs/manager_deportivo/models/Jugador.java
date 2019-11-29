@@ -19,8 +19,9 @@ public class Jugador implements Serializable {
     private int edad;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Equipo equipo;
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "equipo_id")
+    Equipo equipo;
 
     public Jugador() {
     }
@@ -63,5 +64,10 @@ public class Jugador implements Serializable {
 
     public void setEquipo(Equipo equipo) {
         this.equipo = equipo;
+    }
+
+    @Override
+    public String toString() {
+        return nombre + " " + apellidos + " " + edad;
     }
 }

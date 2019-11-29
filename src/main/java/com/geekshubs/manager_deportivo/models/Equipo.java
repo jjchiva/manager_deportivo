@@ -2,6 +2,7 @@ package com.geekshubs.manager_deportivo.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.geekshubs.manager_deportivo.controllers.EquipoController;
+import org.hibernate.annotations.Persister;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 
@@ -16,7 +17,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Entity
 @Table(name = "equipos")
-public class Equipo {//implements Serializable es una interface que permite enviar datos web convirtiendolos en bytes y luego recuperandolos
+public class Equipo implements Serializable{//implements Serializable es una interface que permite enviar datos web convirtiendolos en bytes y luego recuperandolos
     //extends EntityModel es como Serializable pero nos muestra tambien los links
 
     @Id
@@ -30,9 +31,9 @@ public class Equipo {//implements Serializable es una interface que permite envi
 
     @JsonManagedReference
     @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL , mappedBy = "equipo")
-    private List<Jugador> jugadores;
+    List<Jugador> jugadores;
 
-    public Equipo() { jugadores = new ArrayList<Jugador>();
+    public Equipo() { super(); jugadores = new ArrayList<Jugador>();
     }
 
     public Long getId() {
@@ -98,4 +99,9 @@ public class Equipo {//implements Serializable es una interface que permite envi
     public String toString() {
         return "nombre: " + nombre + " estadio: " + estadio + " aforo: " + aforo + " presupuesto: " + presupuesto;
     }
+
+    public void addJugador(Jugador j) {
+        this.jugadores.add(j);
+    }
+
 }
