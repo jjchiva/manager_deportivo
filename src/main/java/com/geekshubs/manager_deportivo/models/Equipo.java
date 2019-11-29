@@ -1,5 +1,6 @@
 package com.geekshubs.manager_deportivo.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.geekshubs.manager_deportivo.controllers.EquipoController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -7,13 +8,15 @@ import org.springframework.hateoas.Link;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Entity
 @Table(name = "equipos")
-public class Equipo implements Serializable  {//implements Serializable es una interface que permite enviar datos web convirtiendolos en bytes y luego recuperandolos
+public class Equipo {//implements Serializable es una interface que permite enviar datos web convirtiendolos en bytes y luego recuperandolos
     //extends EntityModel es como Serializable pero nos muestra tambien los links
 
     @Id
@@ -25,7 +28,11 @@ public class Equipo implements Serializable  {//implements Serializable es una i
     private int aforo;
     private float presupuesto;
 
-    public Equipo() {
+    @JsonManagedReference
+    @OneToMany(fetch = FetchType.LAZY , cascade = CascadeType.ALL , mappedBy = "equipo")
+    private List<Jugador> jugadores;
+
+    public Equipo() { jugadores = new ArrayList<Jugador>();
     }
 
     public Long getId() {
@@ -77,6 +84,15 @@ public class Equipo implements Serializable  {//implements Serializable es una i
 //        //add aparece porque extends EntityModel
 //        //Esto añadira siempre el link al JSON
 //    }
+
+
+    public List<Jugador> getJugadores() {
+        return jugadores;
+    }
+
+    public void setJugadores(List<Jugador> jugadores) {
+        this.jugadores = jugadores;
+    }
 
     @Override
     public String toString() {
