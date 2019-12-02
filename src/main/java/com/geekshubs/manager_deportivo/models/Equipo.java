@@ -7,6 +7,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Equipo implements Serializable{//implements Serializable es una int
     @GeneratedValue(strategy = GenerationType.IDENTITY)//Auto incremento
     Long id;
 
+    @NotNull  //VALIDACION
     private String nombre;
     private String estadio;
     private int aforo;

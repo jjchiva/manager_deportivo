@@ -4,6 +4,7 @@ package com.geekshubs.manager_deportivo.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
@@ -14,6 +15,7 @@ public class Jugador implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty //VALIDACION
     private String nombre;
     private String apellidos;
     private int edad;

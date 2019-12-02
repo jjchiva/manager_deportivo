@@ -34,7 +34,7 @@ public class JugadorController {
     @PostMapping("/lista/add/{id}")
     public List<Jugador> addJugador(@RequestBody Jugador jugador , @PathVariable String id){
         System.out.println("ADD DE JUGADOR");
-        
+
         Equipo equipo = equipoRepository.getOne(Long.parseLong(id));
         jugador.setEquipo(equipo); // Añade el equipo al jugador !!!
         equipo.addJugador(jugador); // Añade el jugador con el equipo en la lista de jugadores del equipo !!!
