@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost")
 @ControllerAdvice //Exception
 @RestController //Devuelve los datos en JSON
 @RequestMapping("/equipo")
@@ -55,8 +56,6 @@ public class EquipoController extends ResponseEntityExceptionHandler {
     public Equipo listarEquipoDetalle(@PathVariable String id ){
         System.out.println("LISTAR UN EQUIPO");
 
-        System.out.println();
-
         if (Integer.parseInt(id) < 0) throw new EquipoErrorException("Id negativo");
         return equipoRepository.findById(Long.parseLong(id)).orElse(null);
     }
@@ -72,7 +71,7 @@ public class EquipoController extends ResponseEntityExceptionHandler {
     @PostMapping ("/lista/add" )
     public List<Equipo> addEquipo(@Valid @RequestBody Equipo equipo , BindingResult result) {
 
-        System.out.println(equipo);
+        equipo.setId(null);
 
         if (result.hasErrors()) { //VALIDACION
             System.out.println("ERROR");
@@ -86,12 +85,17 @@ public class EquipoController extends ResponseEntityExceptionHandler {
     }
 
     @PutMapping ("/lista/{id}")
-    public List<Equipo> updateEquipo(@RequestBody Equipo equipo , @PathVariable String id){
+    public List<Equipo> updateEquipo(@Valid @RequestBody Equipo equipo , BindingResult result , @PathVariable String id){
         equipo.setId(Long.parseLong(id));
-        System.out.println(equipo);
         System.out.println("UPDATE EQUIPO");
-        if (Integer.parseInt(id) < 0) throw new EquipoErrorException("Id negativo");
-        equipoRepository.save(equipo);
+        if (result.hasErrors()) {
+            System.out.println("ERROR");
+            throw new EquipoErrorException("El nombre del equipo está vacio");
+        } else if (Integer.parseInt(id) < 0){
+            throw new EquipoErrorException("Id negativo");
+        } else{
+            equipoRepository.save(equipo);
+        }
         return equipoRepository.findAll();
     }
 
