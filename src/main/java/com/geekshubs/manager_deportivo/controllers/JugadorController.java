@@ -10,14 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+//@CrossOrigin(origins = "http://localhost")
+@ControllerAdvice
 @RestController
 @RequestMapping("/jugador")
 public class JugadorController {
@@ -46,7 +46,6 @@ public class JugadorController {
     @Autowired
     private EquipoRepository equipoRepository;
 
-    @CrossOrigin(origins = "http://localhost")
     @GetMapping("/lista")
     public List<Jugador> listaJugadores(){
         System.out.println("LISTA DE TODOS LOS JUGADORES");
@@ -83,9 +82,26 @@ public class JugadorController {
     @PutMapping("/lista/{id}")
     public List<Jugador> updateJugador(@RequestBody Jugador jugador , @PathVariable String id){
         System.out.println("UPDATE DE JUGADOR");
-        Jugador jugadorRepositoryOne = jugadorRepository.getOne(Long.parseLong(id));
+        jugador.setId(Long.parseLong(id));
+        jugadorRepository.save(jugador);
 
         return jugadorRepository.findAll();
+    }
+
+    @PutMapping("/lista/transferir/{id}/{id_equipo}")
+    public void updateJugadorEquipo( @PathVariable String id , @PathVariable String id_equipo){
+        System.out.println("TRANSFER JUGADOR");
+
+        System.out.println(id_equipo);
+        System.out.println(id);
+        if (Integer.parseInt(id) < 0 | Integer.parseInt(id_equipo) < 0) throw new EquipoErrorException("Id negativo o no numerico");
+
+        Jugador jugador = jugadorRepository.getOne(Long.parseLong(id));
+        Equipo equipo = equipoRepository.getOne(Long.parseLong(id_equipo));
+        jugador.setEquipo(equipo);
+        equipo.addJugador(jugador);
+        equipoRepository.save(equipo);
+
     }
 
     @DeleteMapping("/lista/{id}")
