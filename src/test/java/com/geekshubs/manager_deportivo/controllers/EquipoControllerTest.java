@@ -122,7 +122,7 @@ class EquipoControllerTest {
     @Test
     public void deleteEquipo()  throws Exception  {
         MockHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.delete("/equipo/lista/6");
+                MockMvcRequestBuilders.delete("/equipo/lista/4");
         this.mockMvc.perform(builder)
                 .andExpect(MockMvcResultMatchers.status()
                         .isOk())

@@ -40,9 +40,6 @@ public class EquipoController extends ResponseEntityExceptionHandler {
     }
 
 
-
-
-
     @Autowired
     EquipoRepository equipoRepository;
 
@@ -60,13 +57,6 @@ public class EquipoController extends ResponseEntityExceptionHandler {
         return equipoRepository.findById(Long.parseLong(id)).orElse(null);
     }
 
-    @DeleteMapping("/lista/{id}")
-    public List<Equipo> deleteEquipo(@PathVariable String id){
-        System.out.println("DELETE UN EQUIPO");
-        if (Integer.parseInt(id) < 0) throw new EquipoErrorException("Id negativo"); //EXCEPTION
-        equipoRepository.deleteById(Long.parseLong(id));
-        return equipoRepository.findAll();
-    }
 
     @PostMapping ("/lista/add" )
     public List<Equipo> addEquipo(@Valid @RequestBody Equipo equipo , BindingResult result) {
@@ -83,6 +73,16 @@ public class EquipoController extends ResponseEntityExceptionHandler {
 
         return equipoRepository.findAll();
     }
+
+    @DeleteMapping("/lista/{id}")
+    public List<Equipo> deleteEquipo(@PathVariable String id){
+        System.out.println("DELETE UN EQUIPO");
+        if (Integer.parseInt(id) < 0) throw new EquipoErrorException("Id negativo"); //EXCEPTION
+        equipoRepository.deleteById(Long.parseLong(id));
+        return equipoRepository.findAll();
+    }
+
+
 
     @PutMapping ("/lista/{id}")
     public List<Equipo> updateEquipo(@Valid @RequestBody Equipo equipo , BindingResult result , @PathVariable String id){

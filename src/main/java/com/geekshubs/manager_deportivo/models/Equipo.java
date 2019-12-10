@@ -1,10 +1,10 @@
 package com.geekshubs.manager_deportivo.models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.geekshubs.manager_deportivo.controllers.EquipoController;
-import org.hibernate.annotations.Persister;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.Link;
+//import com.geekshubs.manager_deportivo.controllers.EquipoController;
+//import org.hibernate.annotations.Persister;
+//import org.springframework.hateoas.EntityModel;
+//import org.springframework.hateoas.Link;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,8 +13,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+//import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Entity
 @Table(name = "equipos")
@@ -23,7 +23,7 @@ public class Equipo implements Serializable{//implements Serializable es una int
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)//Auto incremento
-    Long id;
+    private Long id;
 
     @NotNull  //VALIDACION
     private String nombre;

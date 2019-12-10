@@ -3,6 +3,7 @@ package com.geekshubs.manager_deportivo.controllers;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.geekshubs.manager_deportivo.models.Equipo;
+import com.geekshubs.manager_deportivo.models.Jugador;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
@@ -67,7 +68,7 @@ class JugadorControllerTest {
 
 
     @Test
-    public void jugadoreDetalle () throws  IOException {
+    public void jugadorDetalle () throws  IOException {
 
 
         //Preparación
@@ -75,13 +76,13 @@ class JugadorControllerTest {
 
         //Activación
         HttpResponse httpResponse = HttpClientBuilder.create().build().execute(request);
-        Equipo equipo = retrieveResourceFromResponse(httpResponse, Equipo.class);
+        Jugador jugador = retrieveResourceFromResponse(httpResponse, Jugador.class);
 
         //Verificación
         String mimeType = ContentType.getOrDefault(httpResponse.getEntity()).getMimeType();
         assertEquals(HttpStatus.SC_OK , httpResponse.getStatusLine().getStatusCode());
         assertEquals(jsonMimeType , mimeType);
-        assertEquals( "Valencia" , equipo.getNombre());
+        assertEquals( "Carlos" , jugador.getNombre());
 
     }
 
@@ -102,10 +103,10 @@ class JugadorControllerTest {
 
     @Test
     public void updateJugador()  throws Exception {
-        String content="{\"nombre\": \"Athelitc de Bilbao\",\"estadio\": \"San Mamés\",\"aforo\": \"20000\",\"presupuesto\": \"3\",\"jugadores\": []}";
+        String content="{\"nombre\": \"Roger\",\"apellidos\": \"Martí\",\"edad\": \"28\"}";
         MockHttpServletRequestBuilder builder =
 
-                MockMvcRequestBuilders.put("/jugador/lista/3")
+                MockMvcRequestBuilders.put("/jugador/lista/3/3")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(content);
         this.mockMvc.perform(builder)
@@ -124,14 +125,4 @@ class JugadorControllerTest {
                 .andDo(MockMvcResultHandlers.print());
     }
 
-    @Test
-    void updateJugadorEquipo() throws Exception{
-
-        MockHttpServletRequestBuilder builder =
-                MockMvcRequestBuilders.put("/jugador/lista/transferir/3/3");
-        this.mockMvc.perform(builder)
-                .andExpect(MockMvcResultMatchers.status()
-                        .isOk())
-                .andDo(MockMvcResultHandlers.print());
-    }
 }

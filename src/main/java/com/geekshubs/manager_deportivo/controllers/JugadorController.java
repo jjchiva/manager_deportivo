@@ -79,30 +79,36 @@ public class JugadorController {
         return jugadorRepository.findAll();
     }
 
-    @PutMapping("/lista/{id}")
-    public List<Jugador> updateJugador(@RequestBody Jugador jugador , @PathVariable String id){
+    @PutMapping("/lista/{id}/{id_equipo}")
+    public List<Jugador> updateJugador(@RequestBody Jugador jugador , @PathVariable String id  , @PathVariable String id_equipo){
         System.out.println("UPDATE DE JUGADOR");
-        jugador.setId(Long.parseLong(id));
-        jugadorRepository.save(jugador);
-
-        return jugadorRepository.findAll();
-    }
-
-    @PutMapping("/lista/transferir/{id}/{id_equipo}")
-    public void updateJugadorEquipo( @PathVariable String id , @PathVariable String id_equipo){
-        System.out.println("TRANSFER JUGADOR");
-
-        System.out.println(id_equipo);
-        System.out.println(id);
         if (Integer.parseInt(id) < 0 | Integer.parseInt(id_equipo) < 0) throw new EquipoErrorException("Id negativo o no numerico");
-
-        Jugador jugador = jugadorRepository.getOne(Long.parseLong(id));
         Equipo equipo = equipoRepository.getOne(Long.parseLong(id_equipo));
+        jugador.setId(Long.parseLong(id));
         jugador.setEquipo(equipo);
         equipo.addJugador(jugador);
         equipoRepository.save(equipo);
 
+
+
+        return jugadorRepository.findAll();
     }
+
+//    @PutMapping("/lista/transferir/{id}/{id_equipo}")
+//    public void updateJugadorEquipo( @PathVariable String id , @PathVariable String id_equipo){
+//        System.out.println("TRANSFER JUGADOR");
+//
+//        System.out.println(id_equipo);
+//        System.out.println(id);
+//        if (Integer.parseInt(id) < 0 | Integer.parseInt(id_equipo) < 0) throw new EquipoErrorException("Id negativo o no numerico");
+//
+//        Jugador jugador = jugadorRepository.getOne(Long.parseLong(id));
+//        Equipo equipo = equipoRepository.getOne(Long.parseLong(id_equipo));
+//        jugador.setEquipo(equipo);
+//        equipo.addJugador(jugador);
+//        equipoRepository.save(equipo);
+//
+//    }
 
     @DeleteMapping("/lista/{id}")
     public List<Jugador> deleteJugador(@PathVariable String id){
